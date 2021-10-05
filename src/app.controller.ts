@@ -1,9 +1,12 @@
-import { User } from './interfaces/user.interface';
 import { Controller, Get } from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { AxiosResponse } from 'axios';
+
 import { AppService } from './app.service';
 import { CatsService } from './cats/cats.service';
-import { Cat } from './interfaces/cat.interface';
 
+import { Cat } from './interfaces/cat.interface';
+import { User } from './interfaces/user.interface';
 @Controller()
 export class AppController {
   constructor(
@@ -27,8 +30,13 @@ export class AppController {
   }
 
   @Get('users')
-  getUsers(): User[] {
+  getUsers(): Observable<AxiosResponse<User[]>> {
     return this.catsService.getUsers();
+  }
+
+  @Get('usersmock')
+  getUsersMock(): Observable<AxiosResponse<User[]>> {
+    return this.catsService.getUsersMock();
   }
 
   @Get('cats')

@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { HttpService } from '@nestjs/axios';
+import { AxiosResponse } from 'axios';
 
-import { User } from './../interfaces/user.interface';
 import { Cat } from '../interfaces/cat.interface';
-
+import { User } from './../interfaces/user.interface';
 @Injectable()
 export class CatsService {
   private readonly cats: Cat[] = [
@@ -31,15 +33,26 @@ export class CatsService {
     { firstname: 'Marge', lastname: 'Tromp', id: '10' },
   ];
 
+  constructor(private httpService: HttpService) {}
+
   findAll(): Cat[] {
     return this.cats;
   }
 
   getUsersStatic(): User[] {
+    console.log('getUsersStatic');
     return this.users;
   }
 
-  getUsers(): User[] {
-    return this.users;
+  getUsers(): Observable<AxiosResponse<User[]>> {
+    console.log('getUsers');
+    return this.httpService.get('http://localhost:3000/usersstatic');
+  }
+
+  getUsersMock(): Observable<AxiosResponse<User[]>> {
+    console.log('getUsersMock');
+    return this.httpService.get(
+      'https://615aa3d04a360f0017a8116e.mockapi.io/api/users',
+    );
   }
 }
