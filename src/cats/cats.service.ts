@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { AxiosResponse } from 'axios';
 
 import { Cat } from '../interfaces/cat.interface';
 import { User } from './../interfaces/user.interface';
+import { response } from 'express';
 @Injectable()
 export class CatsService {
   private readonly cats: Cat[] = [
@@ -46,20 +47,37 @@ export class CatsService {
 
   getUsersMock(): Observable<AxiosResponse<User[]>> {
     console.log('getUsersMock');
-    return this.httpService.get(
-      'https://615aa3d04a360f0017a8116e.mockapi.io/api/users',
-    );
+    return this.httpService
+      .get('https://615aa3d04a360f0017a8116e.mockapi.io/api/users')
+      .pipe(
+        map((response) => {
+          console.log(response.data);
+          return response.data;
+        }),
+      );
   }
 
   getUsers(): Observable<AxiosResponse<User[]>> {
     console.log('getUsers');
-    return this.httpService.get('http://localhost:3000/usersstatic');
+    return this.httpService.get('http://localhost:3000/usersstatic').pipe(
+      map((response) => {
+        console.log(response.data);
+        return response.data;
+      }),
+    );
   }
 
-  getUsersPromise(): Promise<AxiosResponse<any>> {
+  getUsersPromise(): Promise<any> {
     console.log('getUsersPromise');
-    return this.httpService
+    const x = this.httpService
       .get('http://localhost:3000/usersstatic')
       .toPromise();
+    console.log(
+      'getUsersPromise 1:',
+      x.then((response) => {
+        console.log('getUsersPromise in then', response.data);
+      }),
+    );
+    return null;
   }
 }

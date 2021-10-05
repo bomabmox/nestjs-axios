@@ -30,7 +30,7 @@ export class AppController {
   }
 
   @Get('userspromise')
-  getUsersPromise(): Promise<AxiosResponse<User[]>> {
+  getUsersPromise(): Promise<any> {
     return this.catsService.getUsersPromise();
   }
 
