@@ -29,6 +29,11 @@ export class AppController {
     return this.catsService.getUsersStatic();
   }
 
+  @Get('userspromise')
+  getUsersPromise(): Promise<AxiosResponse<User[]>> {
+    return this.catsService.getUsersPromise();
+  }
+
   @Get('users')
   getUsers(): Observable<AxiosResponse<User[]>> {
     return this.catsService.getUsers();

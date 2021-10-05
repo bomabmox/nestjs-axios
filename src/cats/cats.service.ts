@@ -44,15 +44,22 @@ export class CatsService {
     return this.users;
   }
 
-  getUsers(): Observable<AxiosResponse<User[]>> {
-    console.log('getUsers');
-    return this.httpService.get('http://localhost:3000/usersstatic');
-  }
-
   getUsersMock(): Observable<AxiosResponse<User[]>> {
     console.log('getUsersMock');
     return this.httpService.get(
       'https://615aa3d04a360f0017a8116e.mockapi.io/api/users',
     );
+  }
+
+  getUsers(): Observable<AxiosResponse<User[]>> {
+    console.log('getUsers');
+    return this.httpService.get('http://localhost:3000/usersstatic');
+  }
+
+  getUsersPromise(): Promise<AxiosResponse<any>> {
+    console.log('getUsersPromise');
+    return this.httpService
+      .get('http://localhost:3000/usersstatic')
+      .toPromise();
   }
 }
