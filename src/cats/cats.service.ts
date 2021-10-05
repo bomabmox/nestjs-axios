@@ -5,7 +5,6 @@ import { AxiosResponse } from 'axios';
 
 import { Cat } from '../interfaces/cat.interface';
 import { User } from './../interfaces/user.interface';
-import { response } from 'express';
 @Injectable()
 export class CatsService {
   private readonly cats: Cat[] = [
@@ -67,17 +66,11 @@ export class CatsService {
     );
   }
 
-  getUsersPromise(): Promise<any> {
+  async getUsersPromise(): Promise<any> {
     console.log('getUsersPromise');
-    const x = this.httpService
+    const response = await this.httpService
       .get('http://localhost:3000/usersstatic')
       .toPromise();
-    console.log(
-      'getUsersPromise 1:',
-      x.then((response) => {
-        console.log('getUsersPromise in then', response.data);
-      }),
-    );
-    return null;
+    return response.data;
   }
 }
